@@ -55,31 +55,28 @@
     </section>
       
 
-    <!-- current weather display section -->
-    <section id="current-weather" class="p-6 bg-white shadow-md max-w-xl mx-auto w-full mt-6 rounded-md hidden">
-        <h2 class="text-2xl font-semibold mb-4" id="location-name"></h2>
-        <div class="flex items-center gap-6">
+    <!-- Current Weather Display -->
+    <section id="current-weather"
+        class="bg-white/80 backdrop-blur-lg shadow-md rounded-2xl w-[90%] mx-auto mt-6 p-6 text-gray-800 hidden">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <!-- Weather Info -->
+            <div>
+                <h2 class="text-2xl font-bold" id="location">City, Country</h2>
+                <p class="text-lg mt-1" id="condition">Clear Sky</p>
+                <p class="text-5xl font-extrabold mt-4" id="temperature">--°C</p>
+            </div>
+    
+            <!-- Weather Icon -->
             <div>
                 <img id="weather-icon" src="" alt="Weather Icon" class="w-24 h-24" />
             </div>
-            <div>
-                <p id="temperature" class="text-5xl font-bold"></p>
-                <p id="weather-description" class="capitalize text-lg mt-2"></p>
-            </div>
         </div>
-        <div class="mt-4 grid grid-cols-3 gap-4 text-center text-gray-700">
-            <div>
-                <p class="font-semibold">Humidity</p>
-                <p id="humidity"></p>
-            </div>
-            <div>
-                <p class="font-semibold">Wind Speed</p>
-                <p id="wind-speed"></p>
-            </div>
-            <div>
-                <p class="font-semibold">Pressure</p>
-                <p id="pressure"></p>
-            </div>
+    
+        <!-- Additional Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 text-center text-sm">
+            <div><strong>Humidity:</strong> <span id="humidity">--%</span></div>
+            <div><strong>Wind Speed:</strong> <span id="wind">-- km/h</span></div>
+            <div><strong>Feels Like:</strong> <span id="feels-like">--°C</span></div>
         </div>
     </section>
 
