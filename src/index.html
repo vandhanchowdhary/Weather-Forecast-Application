@@ -39,42 +39,46 @@
         <!-- LEFT: 30% Sidebar for Search -->
         <div class="w-full lg:w-[30%] space-y-4">
             <label for="search-input" class="text-lg font-semibold text-white mb-1 block">Enter city name:</label>
-            <input type="text" id="search-input" placeholder="City name" class="w-full mt-1 mb-2 border-2 border-teal-300 p-2.5 bg-gray-100 rounded-2xl shadow-md focus:outline-teal-700" required />
+            <input type="text" id="search-input" placeholder="City name" class="w-full text-black mt-1 mb-2 border-2 border-teal-300 p-2.5 bg-gray-100 rounded-2xl shadow-md focus:outline-teal-700" required />
             <button type="submit" id="search-button" class="w-full bg-teal-700 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-800 transition">
                 Search
             </button>
-    
+
+            <!-- Recent Cities Dropdown (optional, hidden initially) -->
+            <div id="recent-cities-container" class="mt-4 hidden space-y-2">
+                <label class="block mb-2 text-white font-semibold">Recent Searches:</label>
+                <ul id="recent-cities-list" class="bg-white text-black rounded-xl shadow-md divide-y max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-teal-500">
+                    <!-- Cities will be added here by JS -->
+                </ul>
+                <button id="clear-cities" class="text-sm p-1 rounded-xl w-[25%] shadow-md bg-white text-red-800 hover:bg-red-900 hover:text-white">Clear All</button>
+            </div>
+              
             <p class="text-center text-sm mt-2 mb-4 text-gray-700">——————— or ———————</p>
     
             <button type="button" id="current-location" class="w-full bg-teal-900 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-950 transition">
                 Use Current Location
             </button>
-    
-            <!-- Recent Cities Dropdown (optional, hidden initially) -->
-            <select id="recent-cities"
-                class="w-full bg-gray-100 text-black border-2 mt-1 border-teal-300 rounded-2xl p-2.5 shadow-md hidden">
-                <option disabled selected>Select recent city</option>
-            </select>
+
         </div>
     
         <!-- SPACER: 5% (gap is handled by gap-4 in flex) -->
     
         <!-- RIGHT: 65% Main Display -->
-        <div class="w-full lg:w-[65%] space-y-6">
+        <div class="w-full lg:w-[70%] space-y-6">
     
             <!-- Top Weather Card -->
             <div id="current-weather" class="bg-white/90 backdrop-blur-lg shadow-md rounded-2xl p-6 hidden">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-evenly items-center">
                     <!-- Info -->
                     <div class="space-y-1">
-                        <h2 id="location" class="text-2xl font-bold">City, Country</h2>
-                        <p id="date" class="text-sm text-gray-600">Monday, June 5</p>
-                        <p id="temperature" class="text-4xl font-extrabold mt-2"><strong>Temperature:</strong>--°C</p>
-                        <p><strong>Wind:</strong> <span id="wind">-- km/h</span></p>
-                        <p><strong>Humidity:</strong> <span id="humidity">--%</span></p>
+                        <h2 id="location" class="text-2xl text-black font-bold">City, Country</h2>
+                        <p id="date" class="text-sm text-gray-900">Monday, June 5</p>
+                        <p id="temperature" class="text-xl text-black font-medium mt-2"><strong>Temperature:</strong>--°C</p>
+                        <p class="text-xl text-black font-medium mt-2"><strong>Wind:</strong> <span id="wind">-- km/h</span></p>
+                        <p class="text-xl text-black font-medium mt-2"><strong>Humidity:</strong> <span id="humidity">--%</span></p>
                     </div>
                     <!-- Weather Icon -->
-                    <div>
+                    <div class=" rounded-full shadow-md shadow-teal-400 bg-yellow-200">
                         <img id="weather-icon" src="" alt="Weather Icon" class="w-28 h-28">
                     </div>
                 </div>
