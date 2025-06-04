@@ -33,60 +33,63 @@
         </div>
     </header>
 
-    <!-- Search Section -->
-    <section class="w-[90%] mx-auto mt-2 mb-2 ">
-        <form id="search-form" class="flex flex-wrap gap-3 items-center justify-center">
-            <input type="text" id="search-input" placeholder="Enter city name" class="flex-grow min-w-[200px] border-2 border-teal-300 p-2.5 bg-gray-100 rounded-2xl text-black shadow-md focus:outline-teal-700" required />
-            <button type="submit"
-                class="bg-teal-700 text-white px-4 py-2 rounded-2xl shadow-md hover:bg-teal-800 transition">
+    <!-- Weather App Main Container -->
+    <section class="w-[95%] mx-auto mt-2 mb-2 flex flex-col lg:flex-row gap-4">
+    
+        <!-- LEFT: 30% Sidebar for Search -->
+        <div class="w-full lg:w-[30%] space-y-4">
+            <label for="search-input" class="text-lg font-semibold text-white mb-1 block">Enter city name:</label>
+            <input type="text" id="search-input" placeholder="City name" class="w-full mt-1 mb-2 border-2 border-teal-300 p-2.5 bg-gray-100 rounded-2xl shadow-md focus:outline-teal-700" required />
+            <button type="submit" id="search-button" class="w-full bg-teal-700 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-800 transition">
                 Search
             </button>
-            <button type="button" id="current-location"
-                class="bg-teal-900 text-white px-4 py-2 rounded-2xl shadow-md hover:bg-teal-950 transition">
-                Current Location
+    
+            <p class="text-center text-sm mt-2 mb-4 text-gray-700">——————— or ———————</p>
+    
+            <button type="button" id="current-location" class="w-full bg-teal-900 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-950 transition">
+                Use Current Location
             </button>
     
-            <!-- Dropdown for recent searches -->
+            <!-- Recent Cities Dropdown (optional, hidden initially) -->
             <select id="recent-cities"
-                class="bg-gray-100 text-black border-2 border-teal-300 rounded-2xl p-2.5 shadow-md hidden">
-                <option disabled selected>Select recently searched</option>
+                class="w-full bg-gray-100 text-black border-2 mt-1 border-teal-300 rounded-2xl p-2.5 shadow-md hidden">
+                <option disabled selected>Select recent city</option>
             </select>
-        </form>
-    </section>
-      
-
-    <!-- Current Weather Display -->
-    <section id="current-weather"
-        class="bg-white/80 backdrop-blur-lg shadow-md rounded-2xl w-[90%] mx-auto mt-6 p-6 text-gray-800 hidden">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-            <!-- Weather Info -->
-            <div>
-                <h2 class="text-2xl font-bold" id="location">City, Country</h2>
-                <p class="text-lg mt-1" id="condition">Clear Sky</p>
-                <p class="text-5xl font-extrabold mt-4" id="temperature">--°C</p>
-            </div>
-    
-            <!-- Weather Icon -->
-            <div>
-                <img id="weather-icon" src="" alt="Weather Icon" class="w-24 h-24" />
-            </div>
         </div>
     
-        <!-- Additional Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 text-center text-sm">
-            <div><strong>Humidity:</strong> <span id="humidity">--%</span></div>
-            <div><strong>Wind Speed:</strong> <span id="wind">-- km/h</span></div>
-            <div><strong>Feels Like:</strong> <span id="feels-like">--°C</span></div>
+        <!-- SPACER: 5% (gap is handled by gap-4 in flex) -->
+    
+        <!-- RIGHT: 65% Main Display -->
+        <div class="w-full lg:w-[65%] space-y-6">
+    
+            <!-- Top Weather Card -->
+            <div id="current-weather" class="bg-white/90 backdrop-blur-lg shadow-md rounded-2xl p-6 hidden">
+                <div class="flex justify-between items-center">
+                    <!-- Info -->
+                    <div class="space-y-1">
+                        <h2 id="location" class="text-2xl font-bold">City, Country</h2>
+                        <p id="date" class="text-sm text-gray-600">Monday, June 5</p>
+                        <p id="temperature" class="text-4xl font-extrabold mt-2"><strong>Temperature:</strong>--°C</p>
+                        <p><strong>Wind:</strong> <span id="wind">-- km/h</span></p>
+                        <p><strong>Humidity:</strong> <span id="humidity">--%</span></p>
+                    </div>
+                    <!-- Weather Icon -->
+                    <div>
+                        <img id="weather-icon" src="" alt="Weather Icon" class="w-28 h-28">
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 6-Day Forecast -->
+            <div class="space-y-3">
+                <h3 class="text-xl font-semibold text-gray-800">Next 6 Days Forecast</h3>
+                <div id="forecast-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    <!-- Forecast cards will be added dynamically via JS -->
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- Forecast Section -->
-    <section id="forecast" class="p-6 bg-white shadow-md max-w-xl mx-auto w-full mt-6 rounded-md hidden">
-        <h2 class="text-2xl font-semibold mb-4">5-Day Forecast</h2>
-        <div id="forecast-cards" class="grid grid-cols-5 gap-4">
-            <!-- Forecast cards will be injected here -->
-        </div>
-    </section>
+  
     
     <!-- Footer -->
     <footer class="bg-teal-700 text-white py-4 mt-2 mb-2 shadow-inner rounded-2xl w-[95%] mx-auto">
