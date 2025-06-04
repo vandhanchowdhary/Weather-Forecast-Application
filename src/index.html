@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A weather forecast application developed using HTML, JavaScript, and Tailwind CSS. It retrieves real-time weather data from an API and displays current conditions, location-based forecasts, and extended outlooks in a responsive, user-friendly interface.">
+    <meta name="keywords" content="weather, forecast, application, HTML, JavaScript, Tailwind CSS, API, real-time data">
+    <meta name="author" content="Kavuri Vandhan Murali">
+    <link href="./output.css" rel="stylesheet">
+    <title>Weather Forecast Application</title>
+</head>
+
+<body class="bg-gray-500 text-white font-sans min-h-screen flex flex-col">
+
+    <!-- header -->
+    <header class="bg-teal-700 text-white px-6 py-4 shadow-md rounded-2xl w-[95%] mx-auto mt-4">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            
+            <!-- logo + title -->
+            <div class="flex items-center gap-4">
+                <img src="../images/weather-icon.svg" alt="App Weather Icon" class="w-12 h-12 rounded-full shadow-teal-400 shadow-md">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide">Weather Forecast App</h1>
+                    <p class="text-sm mt-1 md:mt-0 opacity-80">by Kavuri Vandhan Murali</p>
+                </div>
+            </div>
+            
+            <!-- sponser -->
+            <div class="mt-4 md:mt-0">
+                <span class="text-sm italic opacity-75">Powered by Weather API</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- search section -->
+    <section class="bg-transparent p-4 max-w-xl mx-auto m-4 w-full">
+        <form id="search-form" class="flex gap-4">
+            <input 
+                type="text" id="search-input" placeholder="Enter city name"
+                class="flex-grow border-2 border-teal-300 shadow-md text-black p-2.5 bg-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+                required>
+                <button type="submit" 
+                    class="bg-teal-700 text-black text-lg cursor-pointer px-4 rounded-2xl shadow-md hover:bg-teal-800 hover:text-gray-300 active:bg-teal-950 active:text-white active:translate-0.5 active:shadow-none transition duration-200">
+                    Search
+                </button>
+              
+        </form>
+    </section>
+      
+
+    <!-- current weather display section -->
+    <section id="current-weather" class="p-6 bg-white shadow-md max-w-xl mx-auto w-full mt-6 rounded-md hidden">
+        <h2 class="text-2xl font-semibold mb-4" id="location-name"></h2>
+        <div class="flex items-center gap-6">
+            <div>
+                <img id="weather-icon" src="" alt="Weather Icon" class="w-24 h-24" />
+            </div>
+            <div>
+                <p id="temperature" class="text-5xl font-bold"></p>
+                <p id="weather-description" class="capitalize text-lg mt-2"></p>
+            </div>
+        </div>
+        <div class="mt-4 grid grid-cols-3 gap-4 text-center text-gray-700">
+            <div>
+                <p class="font-semibold">Humidity</p>
+                <p id="humidity"></p>
+            </div>
+            <div>
+                <p class="font-semibold">Wind Speed</p>
+                <p id="wind-speed"></p>
+            </div>
+            <div>
+                <p class="font-semibold">Pressure</p>
+                <p id="pressure"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forecast Section -->
+    <section id="forecast" class="p-6 bg-white shadow-md max-w-xl mx-auto w-full mt-6 rounded-md hidden">
+        <h2 class="text-2xl font-semibold mb-4">5-Day Forecast</h2>
+        <div id="forecast-cards" class="grid grid-cols-5 gap-4">
+            <!-- Forecast cards will be injected here -->
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-teal-700 text-white py-4 mt-2 mb-2 shadow-inner rounded-2xl w-[95%] mx-auto">
+        <div class="max-w-5xl mx-auto text-center text-sm opacity-80">
+            <p>© 2025 Kavuri Vandhan Murali. All rights reserved.</p>
+            <p>Made with ❤️ using HTML, Tailwind CSS & JavaScript</p>
+        </div>
+    </footer>
+    
+    <script src="./script.js"></script>
+</body>
+
+</html>
