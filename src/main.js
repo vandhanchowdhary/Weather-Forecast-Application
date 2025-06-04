@@ -44,6 +44,7 @@ async function fetchWeather(city) {
         if (response.ok && data.name) {
             saveRecentCity(data.name);
             updateCurrentWeather(data);
+            fetchForecast(data.name);
         } else {
             console.error("Error fetching weather:", data.message);
             alert(`City not found: "${city}". Please enter a valid city name.`);
@@ -55,6 +56,71 @@ async function fetchWeather(city) {
     }
 }
 
+//-------------------Update background based on weather condition-------------------
+// This function updates the background image based on the weather condition text
+function updateBackground(conditionText, iconCode) {
+
+    const body = document.body;
+    const condition = conditionText.toLowerCase();
+    const isday = iconCode.endsWith("d"); // Check if the icon code indicates daytime
+    let image = "default.jpg";
+
+    if (condition.includes("clear") || condition.includes("sun")) {
+        image = isday ? "sunny.jpg" : "clear_night.jpg";
+    } else if (condition.includes("cloud")) {
+        image = isday ? "cloudy.webp" : "cloudy_night.jpg";
+    } else if (condition.includes("rain") || condition.includes("drizzle")) {
+        image = isday ? "rainy.jpg" : "rainy_night.jpg";
+    } else if (condition.includes("storm") || condition.includes("thunder")) {
+        image = isday ? "storm.jpg" : "storm_night.jpg";
+    } else if (condition.includes("snow")) {
+        image = isday ? "snow.jpg" : "snow_night.jpg";
+    } else if (condition.includes("mist") || condition.includes("fog")) {
+        image = isday ? "mist.jpg" : "fog_night.jpg";
+    }
+
+    body.style.backgroundImage = `url('../images/backgrounds_body/${image}')`;
+    body.style.backgroundSize = "cover";
+    body.style.backgroundPosition = "center";
+    body.style.transition = "background-image 0.5s ease-in-out";
+}
+
+//-------------------update message based on weather condition-------------------
+function getFriendlyMessage(condition) {
+    const conditionText = condition.toLowerCase();
+
+    if (conditionText.includes("clear") || conditionText.includes("sun")) {
+        return "It's a bright and sunny day! 🌞 Don't forget your sunglasses!";
+    } 
+    else if (conditionText.includes("cloud")) {
+        return "A bit cloudy today. ☁️ Might be cozy to stay in!";
+    } 
+    else if (conditionText.includes("rain") || conditionText.includes("drizzle"))
+    {
+        return "It's raining! ☔ Grab your umbrella and stay dry!";
+    } 
+    else if (conditionText.includes("storm") || conditionText.includes("thunder")) 
+    {
+        return "Looks stormy out there! ⚡ Stay safe and indoors!";
+    }
+    else if (conditionText.includes("snow")) {
+        return "Snowy vibes today! ❄️ Time for some hot cocoa!";
+    } 
+    else if (conditionText.includes("mist") || conditionText.includes("fog")) {
+        return "It's quite misty! 🌫️ Drive carefully!";
+    } 
+    else if (conditionText.includes("cold") || conditionText.includes("freeze"))
+    {
+        return "Brrr... It's cold! 🧥 Bundle up!";
+    } 
+    else if (conditionText.includes("hot") || conditionText.includes("heat")) {
+        return "It's quite hot today! 🥵 Stay hydrated!";
+    }
+
+    return "Stay tuned for more weather updates! 🌦️";
+}
+
+//-------------------Update current weather information on UI-------------------
 function updateCurrentWeather(data) {
     // Extract weather info
     const location = `${data.name}, ${data.sys.country}`;
@@ -80,6 +146,11 @@ function updateCurrentWeather(data) {
     const iconImg = document.getElementById("weather-icon");
     iconImg.src = iconUrl;
     iconImg.alt = data.weather[0].description;
+    updateBackground(data.weather[0].main, iconCode); // or .description
+
+    // Friendly message
+    const message = getFriendlyMessage(data.weather[0].description || data.weather[0].main);
+    document.getElementById("weather-message").textContent = message;
 
     // Show the weather card if hidden
     document.getElementById("current-weather").classList.remove("hidden");
@@ -189,4 +260,79 @@ clearCitiesButton.addEventListener("click", () => {
 document.addEventListener("DOMContentLoaded", () => {
   loadRecentCities();
 });
+  
+// -----------------forecast functionality-----------------------
+async function fetchForecast(city) {
+
+    city = city.trim(); // Trim whitespace to avoid issues with empty strings
+    try {
+        const url = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
+        city
+        )}&appid=${API_KEY}&units=metric`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (!response.ok) {
+        console.error("Forecast fetch failed:", data.message);
+        return;
+        }
+
+        const dailyForecasts = getOneForecastPerDay(data.list);
+        renderForecastCards(dailyForecasts);
+    } catch (error) {
+        console.error("Error fetching forecast:", error);
+    }
+}
+
+//helper function to get one forecast per day
+function getOneForecastPerDay(list) {
+  const map = new Map();
+
+  list.forEach((entry) => {
+    const date = new Date(entry.dt * 1000);
+    const day = date.toDateString();
+    const hour = date.getHours();
+
+    // Prefer forecast closest to midday
+    if (!map.has(day) || (hour >= 11 && hour <= 13)) {
+      map.set(day, entry);
+    }
+  });
+
+  return Array.from(map.values()).slice(0, 5);
+}
+
+// Function to render forecast cards
+function renderForecastCards(forecastList) {
+    const container = document.getElementById("forecast-container");
+    container.innerHTML = ""; // Clear previous forecast
+
+    forecastList.forEach((item) => {
+        const date = new Date(item.dt * 1000);
+        const day = date.toLocaleDateString(undefined, {month: "short", day: "numeric", weekday: "short"});
+        const icon = item.weather[0].icon;
+        const desc = item.weather[0].description;
+        const temp = Math.round(item.main.temp);
+        const wind = Math.round(item.wind.speed * 3.6);
+        const humidity = item.main.humidity;
+
+        const card = document.createElement("div");
+        card.className = "bg-white/80 backdrop-blur-md text-black rounded-2xl shadow-md p-4 flex flex-col items-center space-y-2";
+
+        card.innerHTML = `
+        <p class="text-sm font-semibold">${day}</p>
+        <div class="w-16 h-16 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm shadow">
+            <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}" class="w-10 h-10">
+        </div>
+        <p class="text-sm">🌡 ${temp}°C</p>
+        <p class="text-sm">💨 ${wind} km/h</p>
+        <p class="text-sm">💧 ${humidity}%</p>
+        `;
+
+
+        container.appendChild(card);
+    });
+}
+
+
   
