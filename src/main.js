@@ -330,8 +330,6 @@ document.addEventListener("DOMContentLoaded", () => {
 async function fetchForecast(city) {
 
     city = city.trim(); // Trim whitespace to avoid issues with empty strings
-    
-    showLoader(); // Show loader while fetching data
     searchInput.disabled = true; // Disable input to prevent multiple requests
     
     try {
@@ -352,7 +350,6 @@ async function fetchForecast(city) {
         console.error("Error fetching forecast:", error);
     }
     finally {
-        hideLoader(); // Hide loader after fetching data
         searchInput.disabled = false; // Re-enable input
     }
 }
@@ -378,7 +375,7 @@ function getOneForecastPerDay(list) {
 // Function to render forecast cards
 function renderForecastCards(forecastList) {
     const container = document.getElementById("forecast-container");
-    const forecastHeading = document.
+    const forecastHeading = document.getElementById("forecast-heading");
     container.innerHTML = ""; // Clear previous forecast
 
     forecastList.forEach((item) => {
@@ -402,10 +399,15 @@ function renderForecastCards(forecastList) {
         <p class="text-sm">💨 ${wind} km/h</p>
         <p class="text-sm">💧 ${humidity}%</p>
         `;
-        
+
         container.appendChild(card);
     });
     forecastHeading.classList.remove("hidden");
+    if (!forecastList || forecastList.length === 0) {
+      container.innerHTML =
+        "<p class='text-center bg-white/90 backdrop-blur-md text-black'>No forecast data available.</p>";
+      return;
+    }    
 }
 
 
