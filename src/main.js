@@ -235,25 +235,37 @@ currentLocationButton.addEventListener("click", () => {
 
     navigator.geolocation.getCurrentPosition(
         async (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
 
-        try {
-            const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-            );
-            if (!response.ok) {
-            throw new Error("Weather data not available for your location.");
+            try {
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+                );
+
+                if (!response.ok) {
+                throw new Error("Weather data not available for your location.");
+                }
+                const data = await response.json();
+                updateCurrentWeather(data);
+
+                const forecastResponse = await fetch(
+                    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+                );
+
+                if (!forecastResponse.ok) {
+                    throw new Error("Forecast data not available for your location.");
+                }
+                const forecastData = await forecastResponse.json();
+                fetchForecast(forecastData);
+            } catch (error) 
+            {
+                alert(error.message);
             }
-            const data = await response.json();
-            updateCurrentWeather(data);
-        } catch (error) {
-            alert(error.message);
-        }
-        },
-        (error) => {
-        alert("Unable to retrieve your location.");
-        console.error(error);
+            },
+            (error) => {
+            alert("Unable to retrieve your location.");
+            console.error(error);
         }
     );
 });
@@ -333,43 +345,42 @@ async function fetchForecast(city) {
     searchInput.disabled = true; // Disable input to prevent multiple requests
     
     try {
-        const url = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
-        city
-        )}&appid=${API_KEY}&units=metric`;
+        const url = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
         const response = await fetch(url);
         const data = await response.json();
-
         if (!response.ok) {
         console.error("Forecast fetch failed:", data.message);
         return;
         }
-
         const dailyForecasts = getOneForecastPerDay(data.list);
         renderForecastCards(dailyForecasts);
-    } catch (error) {
+    } 
+    catch (error) 
+    {
         console.error("Error fetching forecast:", error);
     }
-    finally {
+    finally 
+    {
         searchInput.disabled = false; // Re-enable input
     }
 }
 
 //helper function to get one forecast per day
 function getOneForecastPerDay(list) {
-  const map = new Map();
+    const map = new Map();
 
-  list.forEach((entry) => {
-    const date = new Date(entry.dt * 1000);
-    const day = date.toDateString();
-    const hour = date.getHours();
+    list.forEach((entry) => {
+        const date = new Date(entry.dt * 1000);
+        const day = date.toDateString();
+        const hour = date.getHours();
 
-    // Prefer forecast closest to midday
-    if (!map.has(day) || (hour >= 11 && hour <= 13)) {
-      map.set(day, entry);
-    }
-  });
+        // Prefer forecast closest to midday
+        if (!map.has(day) || (hour >= 11 && hour <= 13)) {
+        map.set(day, entry);
+        }
+    });
 
-  return Array.from(map.values()).slice(0, 5);
+    return Array.from(map.values()).slice(0, 5);
 }
 
 // Function to render forecast cards
