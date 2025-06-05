@@ -2,6 +2,14 @@
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 
+function showLoader() {
+  document.getElementById("loading-spinner").classList.remove("hidden");
+}
+
+function hideLoader() {
+  document.getElementById("loading-spinner").classList.add("hidden");
+}  
+
 // ------------event handler for search button on UI------------------
 searchButton.addEventListener("click", () => {
     const city = searchInput.value.trim();
@@ -36,6 +44,10 @@ async function fetchWeather(city) {
         alert("Please enter a valid city name.");
         return;
     }
+
+    showLoader(); // Show loader while fetching data
+    searchInput.disabled = true; // Disable input to prevent multiple requests
+
     try {
         
         const response = await fetch(`${BASE_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
@@ -44,7 +56,7 @@ async function fetchWeather(city) {
         if (response.ok && data.name) {
             saveRecentCity(data.name);
             updateCurrentWeather(data);
-            fetchForecast(data.name);
+            await fetchForecast(data.name);
         } else {
             console.error("Error fetching weather:", data.message);
             alert(`City not found: "${city}". Please enter a valid city name.`);
@@ -53,6 +65,10 @@ async function fetchWeather(city) {
     catch (error) {
         console.error("Error fetching weather:", error);
         alert("Network or API error occurred. Please try again later.");
+    }
+    finally {
+        hideLoader(); // Hide loader after fetching data
+        searchInput.disabled = false; // Re-enable input
     }
 }
 
@@ -265,6 +281,10 @@ document.addEventListener("DOMContentLoaded", () => {
 async function fetchForecast(city) {
 
     city = city.trim(); // Trim whitespace to avoid issues with empty strings
+    
+    showLoader(); // Show loader while fetching data
+    searchInput.disabled = true; // Disable input to prevent multiple requests
+    
     try {
         const url = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
         city
@@ -281,6 +301,10 @@ async function fetchForecast(city) {
         renderForecastCards(dailyForecasts);
     } catch (error) {
         console.error("Error fetching forecast:", error);
+    }
+    finally {
+        hideLoader(); // Hide loader after fetching data
+        searchInput.disabled = false; // Re-enable input
     }
 }
 

@@ -105,8 +105,26 @@
         </div>
     </footer>
     
+    <!-- loadind elements -->
+    <!-- Loading Spinner Overlay -->
+<div id="loading-spinner" class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center hidden">
+  <div class="flex flex-col items-center space-y-4">
+    <!-- Replace with any animated weather SVG or icon -->
+    <img src="../images/loading_chicken.svg" alt="Loading..." class="w-16 h-16 animate-spin">
+    <p class="text-white text-lg font-semibold">Fetching Weather Data...</p>
+  </div>
+</div>
+
+
     <!-- JavaScript -->
     <script type="module" src="./main.js"></script>
+    <!-- TODO: add search helper for recommended city as input is being typed 
+        fix header and footer
+        add a loading spinner while fetching data
+        change elements spacing and alignment
+        list height reduction
+         
+    -->
 </body>
 
 </html>
