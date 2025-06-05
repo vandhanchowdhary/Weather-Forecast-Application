@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+@keyframes chicken-flip {
+    0%, 100% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    }

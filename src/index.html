@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
     <meta charset="UTF-8">
@@ -11,95 +11,101 @@
     <title>Weather Forecast Application</title>
 </head>
 
-<body class="bg-gray-500 text-white font-sans min-h-screen flex flex-col">
+<body class="bg-gray-500 text-white font-sans min-h-screen h-full flex flex-col">
 
     <!-- header -->
-    <header class="bg-teal-700 text-white px-6 py-4 shadow-md rounded-2xl w-[95%] mx-auto mt-4 mb-2">
-        <div class="max-w-5xl mx-auto flex items-center justify-between">
-            
+    <header class="bg-teal-700 text-white px-6 py-4 shadow-md">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+    
             <!-- logo + title -->
             <div class="flex items-center gap-4">
-                <img src="../images/weather-icon.svg" alt="App Weather Icon" class="w-12 h-12 rounded-full shadow-teal-400 shadow-md">
+                <img src="../images/weather-icon.svg" alt="App Weather Icon"
+                    class="w-12 h-12 rounded-full shadow-md shadow-teal-400">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide">Weather Forecast Application</h1>
-                    <p class="text-sm mt-1 md:mt-0 opacity-80">by Kavuri Vandhan Murali</p>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide">Weather Forecast App</h1>
+                    <p class="text-sm opacity-80">by Kavuri Vandhan Murali</p>
                 </div>
             </div>
-            
-            <!-- sponser -->
-            <div class="mt-4 md:mt-0">
-                <span class="text-sm italic opacity-75">Powered by Weather API</span>
+    
+            <!-- powered by -->
+            <div class="text-sm italic opacity-75 md:text-right text-center w-full md:w-auto">
+                Powered by Weather API
             </div>
         </div>
     </header>
-
-    <!-- Weather App Main Container -->
-    <section class="w-[95%] mx-auto mt-2 mb-2 flex flex-col lg:flex-row gap-4">
     
-        <!-- LEFT: 30% Sidebar for Search -->
-        <div class="w-full lg:w-[30%] space-y-4">
-            <label for="search-input" class="text-lg font-semibold text-black bg-white/90 backdrop-blur-md mb-1 block w-max p-2 rounded-xl">Enter city name:</label>
-            <input type="text" id="search-input" placeholder="City name" class="w-full text-black mt-1 mb-2 border-2 border-teal-300 p-2.5 bg-gray-200 rounded-2xl shadow-md focus:outline-teal-700" required />
-            <button type="submit" id="search-button" class="w-full bg-teal-700 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-800 transition">
-                Search
-            </button>
+    <main class="flex-grow">
+        <!-- Weather App Main Container -->
+        <section class="w-[95%] mx-auto mt-2 mb-2 flex flex-col lg:flex-row gap-4">
+        
+            <!-- LEFT: 30% Sidebar for Search -->
+            <div class="w-full lg:w-[30%] space-y-4 relative">
+                <label for="search-input" class=" font-semibold text-black bg-white/90 backdrop-blur-md mb-1 block w-max p-2 rounded-xl">Enter city name:</label>
+                <input type="text" id="search-input" placeholder="City name" class="w-full text-black mt-1 mb-2 border-2 border-teal-300 p-2.5 bg-gray-200 rounded-2xl shadow-md focus:outline-teal-700" required />
+                
+                <!-- search suggestion list -->
+                <ul id="suggestions-list" class="absolute bg-white text-black mt-1 rounded-md shadow-lg max-h-48 overflow-y-auto w-full hidden z-10"></ul>
 
-            <!-- Recent Cities Dropdown (optional, hidden initially) -->
-            <div id="recent-cities-container" class="mt-4 hidden space-y-2">
-                <h2 for="recent-cities-list-heading" class="block mb-2 text-black bg-white/90 backdrop-blur-md font-semibold p-2 w-max rounded-xl">Recent Searches:</h2>
-                <ul aria-labelledby="recent-cities-list-heading" id="recent-cities-list" class="bg-white text-black rounded-xl shadow-md divide-y max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-teal-500">
-                    <!-- Cities will be added here by JS -->
-                </ul>
-                <button id="clear-cities" class="text-sm p-1 rounded-xl w-[25%] shadow-md bg-white text-red-800 hover:bg-red-900 hover:text-white">Clear All</button>
+                <button type="submit" id="search-button" class="w-full bg-teal-700 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-800 transition">
+                    Search
+                </button>
+
+                <!-- Recent Cities Dropdown (optional, hidden initially) -->
+                <div id="recent-cities-container" class="mt-4 hidden space-y-2">
+                    <h2 for="recent-cities-list-heading" class="block mb-2 text-black bg-white/90 backdrop-blur-md font-semibold p-2 w-max rounded-xl">Recent Searches:</h2>
+                    <ul aria-labelledby="recent-cities-list-heading" id="recent-cities-list" class="bg-white text-black rounded-xl shadow-md divide-y max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-teal-500">
+                        <!-- Cities will be added here by JS -->
+                    </ul>
+                    <button id="clear-cities" class="text-sm p-1 rounded-xl w-[25%] shadow-md bg-white text-red-800 hover:bg-red-900 hover:text-white">Clear All</button>
+                </div>
+                
+                <p class="text-center text-sm mt-2 mb-4 text-gray-700">——————— or ———————</p>
+        
+                <button type="button" id="current-location" class="w-full bg-teal-900 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-950 transition">
+                    Use Current Location
+                </button>
+
             </div>
-              
-            <p class="text-center text-sm mt-2 mb-4 text-gray-700">——————— or ———————</p>
-    
-            <button type="button" id="current-location" class="w-full bg-teal-900 text-white py-2 mt-1 mb-2 rounded-2xl shadow-md hover:bg-teal-950 transition">
-                Use Current Location
-            </button>
-
-        </div>
-    
-        <!-- SPACER: 5% (gap is handled by gap-4 in flex) -->
-    
-        <!-- RIGHT: 65% Main Display -->
-        <div class="w-full lg:w-[70%] space-y-6">
-    
-            <!-- Top Weather Card -->
-            <div id="current-weather" class="bg-white/90 backdrop-blur-lg shadow-md rounded-2xl p-6 hidden">
-                <div class="flex justify-evenly items-center">
-                    <!-- Info -->
-                    <div class="space-y-1">
-                        <h2 id="location" class="text-2xl text-black font-bold">City, Country</h2>
-                        <p id="date" class="text-sm text-gray-900">Monday, June 5</p>
-                        <p id="temperature" class="text-xl text-black font-medium mt-2"><strong>Temperature:</strong>--°C</p>
-                        <p class="text-xl text-black font-medium mt-2"><strong>Wind:</strong> <span id="wind">-- km/h</span></p>
-                        <p class="text-xl text-black font-medium mt-2"><strong>Humidity:</strong> <span id="humidity">--%</span></p>
+        
+            <!-- SPACER: 5% (gap is handled by gap-4 in flex) -->
+        
+            <!-- RIGHT: 65% Main Display -->
+            <div class="w-full lg:w-[70%] space-y-6">
+        
+                <!-- Top Weather Card -->
+                <div id="current-weather" class="bg-white/90 backdrop-blur-lg shadow-md rounded-2xl p-6 hidden">
+                    <div class="flex justify-evenly items-center">
+                        <!-- Info -->
+                        <div class="space-y-1">
+                            <h2 id="location" class="text-2xl text-black font-bold">City, Country</h2>
+                            <p id="date" class="text-sm text-gray-900">Monday, June 5</p>
+                            <p id="temperature" class="text-xl text-black font-medium mt-2"><strong>Temperature:</strong>--°C</p>
+                            <p class="text-xl text-black font-medium mt-2"><strong>Wind:</strong> <span id="wind">-- km/h</span></p>
+                            <p class="text-xl text-black font-medium mt-2"><strong>Humidity:</strong> <span id="humidity">--%</span></p>
+                        </div>
+                        <!-- Weather Icon -->
+                        <div id="weather-icon-container" class="w-24 h-24 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm shadow-lg ring-1 ring-white/20">
+                            <img id="weather-icon" src="" alt="Weather Icon" class="w-20 h-20" />
+                        </div>                      
+                        <!-- weather message -->
+                        <p id="weather-message" class="text-center mt-3 text-base text-teal-900 font-semibold italic"></p>
                     </div>
-                    <!-- Weather Icon -->
-                    <div id="weather-icon-container" class="w-24 h-24 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-sm shadow-lg ring-1 ring-white/20">
-                        <img id="weather-icon" src="" alt="Weather Icon" class="w-20 h-20" />
-                    </div>                      
-                    <!-- weather message -->
-                    <p id="weather-message" class="text-center mt-3 text-base text-teal-900 font-semibold italic"></p>
+                </div>
+        
+                <!-- 6-Day Forecast -->
+                <div class="space-y-3">
+                    <h3 id="forecast-heading" class="text-xl bg-white/90 w-max p-2 rounded-xl font-semibold text-black align-middle hidden">Next 5 Days Forecast</h3>
+                    <div id="forecast-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <!-- Forecast cards will be added dynamically via JS -->
+                    </div>
                 </div>
             </div>
-    
-            <!-- 6-Day Forecast -->
-            <div class="space-y-3">
-                <h3 class="text-xl bg-white/90 w-max p-2 rounded-xl font-semibold text-black align-middle">Next 5 Days Forecast</h3>
-                <div id="forecast-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                    <!-- Forecast cards will be added dynamically via JS -->
-                </div>
-            </div>
-        </div>
-    </section>
-  
+        </section>
+    </main>
     
     <!-- Footer -->
-    <footer class="bg-teal-700 text-white py-4 mt-2 mb-2 shadow-inner rounded-2xl w-[95%] mx-auto">
-        <div class="max-w-5xl mx-auto text-center text-sm opacity-80">
+    <footer class="bg-teal-700 text-white py-4 shadow-inner">
+        <div class="flex flex-col sm:flex-row justify-between items-center px-6 text-sm opacity-90 gap-2">
             <p>© 2025 Kavuri Vandhan Murali. All rights reserved.</p>
             <p>Made with ❤️ using HTML, Tailwind CSS & JavaScript</p>
         </div>
@@ -107,23 +113,19 @@
     
     <!-- loadind elements -->
     <!-- Loading Spinner Overlay -->
-<div id="loading-spinner" class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center hidden">
-  <div class="flex flex-col items-center space-y-4">
-    <!-- Replace with any animated weather SVG or icon -->
-    <img src="../images/loading_chicken.svg" alt="Loading..." class="w-16 h-16 animate-spin">
-    <p class="text-white text-lg font-semibold">Fetching Weather Data...</p>
-  </div>
-</div>
-
+    <div id="loading-spinner" class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center hidden">
+    <div class="flex flex-col items-center space-y-4 w-16 h-16 [perspective:500px]">
+        <!-- Replace with any animated weather SVG or icon -->
+        <img src="../images/loading_chicken.svg" alt="Loading..." class="w-16 h-16 [animation:chicken-flip_1.5s_ease-in-out_infinite] [transform-style:preserve-3d]">
+        <p class="text-white text-lg font-semibold w-max">Fetching Weather Data...</p>
+    </div>
+    </div>
 
     <!-- JavaScript -->
     <script type="module" src="./main.js"></script>
-    <!-- TODO: add search helper for recommended city as input is being typed 
-        fix header and footer
-        add a loading spinner while fetching data
+    <!-- TODO: 
         change elements spacing and alignment
         list height reduction
-         
     -->
 </body>
 

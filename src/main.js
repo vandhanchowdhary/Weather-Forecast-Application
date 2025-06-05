@@ -31,7 +31,58 @@ searchInput.addEventListener("keypress", (e) => {
         searchButton.click();
     }
 });
-  
+
+// -------------------search input suggestions-------------------
+const suggestionsList = document.getElementById("suggestions-list");
+
+searchInput.addEventListener("input", async () => {
+    const query = searchInput.value.trim();
+
+    if (query.length < 2) {
+        suggestionsList.classList.add("hidden");
+        return;
+    }
+    try {
+        const response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${API_KEY}`);
+        const suggestions = await response.json();
+        renderSuggestions(suggestions);
+    } 
+    catch (error) {
+        console.error("Failed to fetch city suggestions:", error);
+        suggestionsList.classList.add("hidden");
+    }
+});
+
+function renderSuggestions(suggestions) {
+    suggestionsList.innerHTML = "";
+
+    if (!suggestions || suggestions.length === 0) {
+        suggestionsList.classList.add("hidden");
+        return;
+    }
+
+    suggestions.forEach((city) => {
+      const li = document.createElement("li");
+      li.textContent = `${city.name}, ${city.country}`;
+      li.className = "px-4 py-2 hover:bg-teal-100 cursor-pointer";
+      li.addEventListener("click", () => {
+        searchInput.value = city.name;
+        suggestionsList.classList.add("hidden");
+        fetchWeather(city.name);
+      });
+
+      suggestionsList.appendChild(li);
+    });
+
+    suggestionsList.classList.remove("hidden");
+}
+
+// Hide suggestions when clicking outside
+document.addEventListener("click", (e) => {
+    if (!suggestionsList.contains(e.target) && e.target !== searchInput) {
+        suggestionsList.classList.add("hidden");
+    }
+});
 
 const API_KEY = "4740b6e03a0c38aa982463a7fac33e1e";
 const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
@@ -209,48 +260,46 @@ currentLocationButton.addEventListener("click", () => {
 
 
 // -----------------Recent cities dropdown functionality-----------------------
-const recentCitiesContainer = document.getElementById(
-  "recent-cities-container"
-);
+const recentCitiesContainer = document.getElementById("recent-cities-container");
 const recentCitiesList = document.getElementById("recent-cities-list");
 const clearCitiesButton = document.getElementById("clear-cities");
 
 function loadRecentCities() {
-  const cities = JSON.parse(localStorage.getItem("recentCities")) || [];
+    const cities = JSON.parse(localStorage.getItem("recentCities")) || [];
 
-  if (cities.length === 0) {
-    recentCitiesContainer.classList.add("hidden");
-    return;
-  }
+    if (cities.length === 0) {
+        recentCitiesContainer.classList.add("hidden");
+        return;
+    }
 
-  recentCitiesList.innerHTML = "";
+    recentCitiesList.innerHTML = "";
 
-  cities.forEach((city) => {
-    const li = document.createElement("li");
-    li.className ="flex justify-between items-center px-3 py-2 hover:bg-teal-700  transition-colors cursor-pointer";
+    cities.forEach((city) => {
+        const li = document.createElement("li");
+        li.className ="flex justify-between items-center px-3 py-2 hover:bg-teal-700  transition-colors cursor-pointer";
 
-    const nameSpan = document.createElement("span");
-    nameSpan.textContent = city;
-    nameSpan.classList.add("cursor-pointer");
-    li.addEventListener("click", () => {
-      fetchWeather(city);
-    });      
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = city;
+        nameSpan.classList.add("cursor-pointer");
+        li.addEventListener("click", () => {
+        fetchWeather(city);
+        });      
 
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "❌";
-    delBtn.className = "text-red-700 hover:text-red-900 hover:cursor-pointer text-sm ml-2";
-    delBtn.addEventListener("click", (event) => {
-      event.stopPropagation(); // <-- stops the click from bubbling up to the li
-      removeRecentCity(city);
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "❌";
+        delBtn.className = "text-red-700 hover:text-red-900 hover:cursor-pointer text-sm ml-2";
+        delBtn.addEventListener("click", (event) => {
+        event.stopPropagation(); // <-- stops the click from bubbling up to the li
+        removeRecentCity(city);
+        });
+        
+
+        li.appendChild(nameSpan);
+        li.appendChild(delBtn);
+        recentCitiesList.appendChild(li);
     });
-      
 
-    li.appendChild(nameSpan);
-    li.appendChild(delBtn);
-    recentCitiesList.appendChild(li);
-  });
-
-  recentCitiesContainer.classList.remove("hidden");
+    recentCitiesContainer.classList.remove("hidden");
 }
 
 function saveRecentCity(city) {
@@ -329,6 +378,7 @@ function getOneForecastPerDay(list) {
 // Function to render forecast cards
 function renderForecastCards(forecastList) {
     const container = document.getElementById("forecast-container");
+    const forecastHeading = document.
     container.innerHTML = ""; // Clear previous forecast
 
     forecastList.forEach((item) => {
@@ -352,10 +402,10 @@ function renderForecastCards(forecastList) {
         <p class="text-sm">💨 ${wind} km/h</p>
         <p class="text-sm">💧 ${humidity}%</p>
         `;
-
-
+        
         container.appendChild(card);
     });
+    forecastHeading.classList.remove("hidden");
 }
 
 
