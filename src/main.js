@@ -3,11 +3,17 @@ const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
 
 function showLoader() {
-  document.getElementById("loading-spinner").classList.remove("hidden");
+  const loader = document.getElementById("loading-spinner");
+  loader.classList.remove("hidden");
+  loader.classList.add("flex");
+  loader.classList.add("items-center");
+  loader.classList.add("justify-center");
 }
 
 function hideLoader() {
-  document.getElementById("loading-spinner").classList.add("hidden");
+  const loader = document.getElementById("loading-spinner");
+  loader.classList.add("hidden");
+  loader.classList.remove("flex");
 }
 
 // ------------event handler for search button on UI------------------
@@ -121,6 +127,7 @@ async function fetchWeather(city) {
   } finally {
     hideLoader(); // Hide loader after fetching data
     searchInput.disabled = false; // Re-enable input
+    searchInput.value = ""; // Clear input field
   }
 }
 
@@ -242,6 +249,8 @@ currentLocationButton.addEventListener("click", () => {
     return;
   }
 
+  showLoader(); // Show loader while fetching location
+
   navigator.geolocation.getCurrentPosition(
     async (position) => {
       const lat = position.coords.latitude;
@@ -268,6 +277,9 @@ currentLocationButton.addEventListener("click", () => {
         fetchForecast(data.name);
       } catch (error) {
         alert(error.message);
+      } finally {
+        hideLoader(); // Hide loader after fetching data
+        searchInput.disabled = false; // Re-enable input
       }
     },
     (error) => {
