@@ -8,8 +8,8 @@
         content="A weather forecast application developed using HTML, JavaScript, and Tailwind CSS. It retrieves real-time weather data from an API and displays current conditions, location-based forecasts, and extended outlooks in a responsive, user-friendly interface.">
     <meta name="keywords" content="weather, forecast, application, HTML, JavaScript, Tailwind CSS, API, real-time data">
     <meta name="author" content="Kavuri Vandhan Murali">
-    <link rel="icon" type="image/x-icon" href="/images/weather-icon.svg">
-    <link href="/src/output.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../images/weather-icon.svg">
+    <link href="output.css" rel="stylesheet">
     <title>Weather Forecast Application</title>
 </head>
 
@@ -21,7 +21,7 @@
 
             <!-- logo + title -->
             <div class="flex items-center gap-4">
-                <img src="/images/weather-icon.svg" alt="App Weather Icon"
+                <img src="../images/weather-icon.svg" alt="App Weather Icon"
                     class="w-12 h-12 rounded-full shadow-md shadow-teal-400">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide">Weather Forecast App</h1>
@@ -189,14 +189,14 @@
     <!-- Loading Spinner Overlay -->
     <div id="loading-spinner" class="hidden fixed inset-0 z-50 bg-black/50">
         <div class="flex flex-col items-center space-y-4 w-16 h-16 [perspective:500px]">
-            <img src="/images/loading_chicken.svg" alt="Loading..."
+            <img src="../images/loading_chicken.svg" alt="Loading..."
                 class="w-16 h-16 [animation:chicken-flip_1.5s_ease-in-out_infinite] [transform-style:preserve-3d]">
             <p role="alert" class="text-white text-lg font-semibold w-max">Fetching Weather Data...</p>
         </div>
     </div>
 
     <!-- JavaScript -->
-    <script type="module" src="/src/main.js" defer></script>
+    <script type="module" src="main.js" defer></script>
 </body>
 
 </html>
