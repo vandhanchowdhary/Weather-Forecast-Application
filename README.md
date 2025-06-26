@@ -25,12 +25,23 @@ A responsive weather forecast web application built using **HTML**, **JavaScript
 
 ---
 
-## Working visuals
+## Instructions for delpoyement
 
-![Visual-1](./screenshots/visual_1.png)
-![Visual-2](./screenshots/visual_2.png)
-![Visual-3](./screenshots/visual_3.png)
-![Visual-4](./screenshots/visual_4.png)
+1. Clone and run the app immediately because **output.css** is included.
+
+2. Or, if you want to regenerate it, follow as below after **cd** 'ing into the project folder:
+
+    ```bash
+
+    npm install
+    npx tailwindcss -i ./src/input.css -o ./dist/output.css
+
+    ```
+
+3. (Optional) Add Live Server Setup:
+    If you’re using VS Code, install the Live Server extension, then right-click on index.html → **Open with Live Server**. Or just open index.html in browser directly.
+
+---
 
 ## Contact
 
