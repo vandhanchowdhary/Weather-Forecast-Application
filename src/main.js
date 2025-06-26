@@ -357,6 +357,7 @@ clearCitiesButton.addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadRecentCities();
+  updateBackground("default", "01d"); // shows default.jpg on initial load
 });
 
 // -----------------forecast functionality-----------------------
